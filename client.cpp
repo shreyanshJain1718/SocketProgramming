@@ -8,9 +8,12 @@
 #define PORT 8080
 
 int main(int argc, char const *argv[]){
+	//socket for the clinet
 	struct sockaddr_in address;
 
 	int sock = 0, valread;
+
+	//socket for the server
 	struct sockaddr_in serv_addr;
 	char *hello = "Hello from clinet";
 	char buffer[1024] = {0};
