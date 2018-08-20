@@ -9,10 +9,12 @@
 
 int main(int argc, char const *argv[]){
 	struct sockaddr_in address;
+
 	int sock = 0, valread;
 	struct sockaddr_in serv_addr;
 	char *hello = "Hello from clinet";
 	char buffer[1024] = {0};
+	
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		printf("\n Socket creation error \n");
 		return -1;
@@ -22,6 +24,8 @@ int main(int argc, char const *argv[]){
 
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(PORT);
+	//inet_pton
+	//convert the IP address (IPv4 or IPv6 to binary form
 	if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0){
 		printf("\nInvalid address/ Addresss not supported \n");
 		return -1;

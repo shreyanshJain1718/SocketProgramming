@@ -7,11 +7,24 @@
 #define PORT 8080
 int main(int argc, char const *argv[]){
 	int server_fd, new_socket, valread;
+	
+	//new_socket to store the file descriptor for the client socket when connection is accepted
+	//for multiple clients multiple file descriptors are required
+	
+	// socket() return a file handler to manipulate the socket options which is stored in server_fd 
+	//server_fd : file handler for the socket created 
+
 	struct sockaddr_in address;
+	
 	int opt = 1;
+	
 	int addrlen = sizeof(address);
+	
 	char buffer[1024] = {0};
+	
 	char *hello = "Hello from server";
+
+	//AF_INET to set the domain to internet protocols, address from internet IP address
 
 	//create socket file descriptor 
 	if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){
@@ -19,13 +32,15 @@ int main(int argc, char const *argv[]){
 		exit(EXIT_FAILURE);
 	}
 
-	//attach socket to the port 8080
+
 	if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))){
 		perror("setsockpot");
 		exit(EXIT_FAILURE);
 	}
-
+	
 	address.sin_family = AF_INET;
+	//INADDR_ANY binds the socket to all available interfaces. 
+	//if the socket is to be connnected by a client on the host the IP for localhost can be used "127.0.0.1" as used in clint in this example
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = htons(PORT);
 	
@@ -35,6 +50,7 @@ int main(int argc, char const *argv[]){
 		perror("bind failed");
 		exit(EXIT_FAILURE);
 	}
+
 	if(listen(server_fd, 3) < 0){
 		perror("listen");
 		exit(EXIT_FAILURE);
