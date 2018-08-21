@@ -4,6 +4,8 @@
 #include<stdlib.h>
 #include<netinet/in.h>
 #include<string.h>
+
+#define MAX_CONN 2
 #define PORT 8080
 int main(int argc, char const *argv[]){
 	int server_fd, new_socket, valread;
@@ -51,7 +53,7 @@ int main(int argc, char const *argv[]){
 		exit(EXIT_FAILURE);
 	}
 
-	if(listen(server_fd, 3) < 0){
+	if(listen(server_fd, MAX_CONN) < 0){
 		perror("listen");
 		exit(EXIT_FAILURE);
 	}
@@ -60,6 +62,13 @@ int main(int argc, char const *argv[]){
 		perror("accept");
 		exit(EXIT_FAILURE);
 	}
+	int client2;
+	if((client2 = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0){
+		perror("accepting second failed");
+		exit(EXIT_FAILURE);
+	}
+	
+
 
 	valread = read(new_socket, buffer, 1024);
 	printf("%s\n", buffer);
