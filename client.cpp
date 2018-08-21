@@ -38,9 +38,12 @@ int main(int argc, char const *argv[]){
 		printf("\n Connection failed \n");
 		return -1;
 	}
-	send(sock, hello, strlen(hello), 0);
-	printf("Hello message sent\n");
-	valread = read(sock, buffer, 1024);
-	printf("%s\n", buffer);
+	char *msgs[] = {"hello", "hey", "hi", "how are you?", "i'm fine thanks for asking", "exit"};
+	for(int i=0;i<6;i++){
+		send(sock, msgs[i], strlen(msgs[i]), 0);
+		printf("%d message sent\n", i);
+		valread = read(sock, buffer, 1024);
+		printf("[server]%s\n", buffer);
+	}
 	return 0;
 }
